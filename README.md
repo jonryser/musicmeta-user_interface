@@ -1,4 +1,5 @@
 # Music Meta
+
 An application that allows users to record and store meta data for songs, projects, and tracks as they are being written, recorded, and delivered from the ground up.
 
 ## Setup
@@ -25,7 +26,7 @@ Download and install main dependencies for your specific environment.
 1. Run `yarn` - Required only when installing packages.
 1. Run `yarn dev` this will bootup the local devlopment server.
 1. On success, you can view the website in any browser at `http://localhost:3333/`
-	- It will open automatically in your default browser
+    - It will open automatically in your default browser
 
 ## Custom Tasks
 

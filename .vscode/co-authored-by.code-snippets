@@ -1,0 +1,9 @@
+{
+  "Git Co-authored-by Jon tags": {
+    "prefix": "coauthored - Jon",
+    "body": [
+      "Co-authored-by: Jon Ryser <241263+jonryser@users.noreply.github.com>"
+    ],
+    "description": "Insert GitHub co-authorship tag for Jon Ryser"
+  }
+}
