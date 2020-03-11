@@ -40,9 +40,13 @@ yarn.lock
 
 
 # IDE Stuff
-.vscode
 .idea
 .project
 .next/
 .settings/org.eclipse.wst.common.project.facet.core.xml
 .settings/ts.eclipse.ide.core.prefs
+
+# VScode settings
+.vscode/*
+!.vscode/co-authored-by.code-snippets
+!.vscode/extensions.json
