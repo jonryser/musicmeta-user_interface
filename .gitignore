@@ -7,11 +7,14 @@
 /coverage
 /e2e/compiled
 /e2e/error-shots
-src/config/wireless/jsdom.ts
 /css-test/
 
 # production
 /build
+
+# next.js
+/.next/
+/out/
 
 # misc
 .DS_Store
@@ -30,19 +33,20 @@ src/config/wireless/jsdom.ts
 /src/fonts/**/*
 /src/fonts/icon-fonts/**/*
 /static/fonts/**/*
-/static/js/attwc-global*
 **/*.css
 !public/styles/*.*
+/storybook-static/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn.lock
-
 
 # IDE Stuff
+.code-workspace
 .idea
 .project
 .next/
+/.project/
+/.settings/
 .settings/org.eclipse.wst.common.project.facet.core.xml
 .settings/ts.eclipse.ide.core.prefs
 

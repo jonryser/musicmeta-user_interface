@@ -6,17 +6,17 @@ An application that allows users to record and store meta data for songs, projec
 
 ### Main Dependencies
 
-1. [Node](http://nodejs.org) (`node`) - at least version 8.6, no higher than 9.0
-1. [Yarn](https://yarnpkg.com/lang/en/) (`yarn`)
-1. [Git](https://git-scm.com/) (`git`)
+1. [Node](http://nodejs.org) (`node`) - tested with version 12.16.1
+1. [Yarn](https://yarnpkg.com/lang/en/) (`yarn`) - tested with version 1.21.1
+1. [Git](https://git-scm.com/) (`git`) - tested with version 2.23.0
 
-Download and install main dependencies for your specific environment.
+Download and install the main dependencies for your specific environment.
 
 ### Initial Environment Setup
 
-1. Optional - Install windows-build-tools for windows environment only.
+1. Optional - Install [windows-build-tools](https://www.npmjs.com/package/windows-build-tools) for windows environment only.
 
-    `npm i -g windows-build-tools`
+    `yarn global add windows-build-tools`
 
 ## Running
 
