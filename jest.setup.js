@@ -1,5 +1,5 @@
 const JSDOM = require('jsdom').JSDOM;
-global.requestAnimationFrame = function(callback) {
+global.requestAnimationFrame = function (callback) {
     setTimeout(callback, 0);
 };
 
@@ -40,10 +40,11 @@ global.window.resizeTo = (width, height) => {
 global.window.matchMedia = () => {
     return {
         matches: false,
-        addListener: () => {},
-        removeListener: () => {},
+        addListener: () => { },
+        removeListener: () => { },
     };
 };
 var enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
 enzyme.configure({ adapter: new Adapter() });
+

@@ -18,6 +18,7 @@
             true,
             "as-needed"
         ],
+        "only-arrow-functions": false,
         "interface-name": false,
         "jsx-no-multiline-js": false,
         "no-empty-interface": false,

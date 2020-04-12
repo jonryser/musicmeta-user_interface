@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 
 // Components.
@@ -9,12 +9,12 @@ const headData1: HeadData = {
     link: [
         {
             href: `https://someUrl1.com`,
-            hreflang: `en`,
+            hrefLang: `en`,
             rel: `linkTag1`,
         },
         {
             href: `https://someUrl2.com`,
-            hreflang: `fr`,
+            hrefLang: `fr`,
             rel: `linkTag2`,
         },
     ],
@@ -28,7 +28,7 @@ const headData1: HeadData = {
             value: `value2`,
         },
     ],
-    scriptCalls: [
+    scriptCall: [
         {
             async: true,
             defer: true,
@@ -46,12 +46,12 @@ const headData2: HeadData = {
     link: [
         {
             href: `https://someUrl2.com`,
-            hreflang: `fr`,
+            hrefLang: `fr`,
             rel: `linkTag2`,
         },
         {
             href: `https://someUrl1.com`,
-            hreflang: `en`,
+            hrefLang: `en`,
             rel: `linkTag1`,
         },
     ],

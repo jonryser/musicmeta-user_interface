@@ -1,19 +1,19 @@
 import React from 'react'
 import { NextPage } from 'next'
-import getConfig from 'next/config';
-import Head from './../components/Head';
-import MainCanvas from './../components/MainCanvas';
+import getConfig from 'next/config'
+import Head from './../components/Head'
+import MainCanvas from './../components/MainCanvas'
 // Content.
 import { pageTags } from './../constants/PageTags'
 
 // Only holds publicRuntimeConfig from next.config.js nothing else.
-const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig()
 
 interface IndexProps {
-    root: string;
+    root: string
 }
 
-const MetaMusicIndex: NextPage<IndexProps> = ({ root }) => {
+const MetaMusicIndex: NextPage<IndexProps> = ({ root }): React.ReactElement => {
     return (
         <>
             <Head data={{ title: 'Meta Music' }} default={pageTags} root={root} />

@@ -1,15 +1,16 @@
 export default interface HeadProps {
-    data: HeadData;
-    default?: PageTags;
-    root?: string;
+    data: HeadData
+    default?: PageTags
+    root?: string
 }
 
 // NOTE: This interface should include all and only data that is being passed into the component
 export interface HeadData {
-    link?: LinkData[];
-    meta?: MetaData[];
-    script?: ScriptData[];
-    title?: string;
+    link?: LinkData[]
+    meta?: MetaData[]
+    script?: ScriptData[]
+    scriptCall?: ScriptCallData[]
+    title?: string
 }
 
 // Must be in this order so the attributes are built per SEO team's specifications.
@@ -17,7 +18,7 @@ export enum LinkAttr {
     as = 'as',
     crossorigin = 'crossorigin',
     href = 'href',
-    hreflang = 'hreflang',
+    hrefLang = 'hrefLang',
     media = 'media',
     rel = 'rel',
     sizes = 'sizes',
@@ -25,26 +26,26 @@ export enum LinkAttr {
 }
 
 export interface LinkData {
-    [LinkAttr.as]?: string;
-    [LinkAttr.crossorigin]?: string;
-    [LinkAttr.href]?: string;
-    [LinkAttr.hreflang]?: string;
-    [LinkAttr.media]?: string;
-    [LinkAttr.rel]?: string;
-    [LinkAttr.sizes]?: string;
-    [LinkAttr.type]?: string;
+    [LinkAttr.as]?: string
+    [LinkAttr.crossorigin]?: string
+    [LinkAttr.href]?: string
+    [LinkAttr.hrefLang]?: string
+    [LinkAttr.media]?: string
+    [LinkAttr.rel]?: string
+    [LinkAttr.sizes]?: string
+    [LinkAttr.type]?: string
 }
 
 export interface LinkTags {
-    canonical?: string[];
-    dnsFetch?: string[];
-    icon?: string[];
-    pingback?: string[];
-    preconnect?: string[];
-    preloadFetch?: string[];
-    preloadScript?: string[];
-    preloadStyle?: string[];
-    stylesheet?: string[];
+    canonical?: string[]
+    dnsFetch?: string[]
+    icon?: string[]
+    pingback?: string[]
+    preconnect?: string[]
+    preloadFetch?: string[]
+    preloadScript?: string[]
+    preloadStyle?: string[]
+    stylesheet?: string[]
 }
 
 // Must be in this order so the attributes are built per SEO team's specifications.
@@ -58,27 +59,27 @@ export enum MetaAttr {
 }
 
 export interface MetaData {
-    [MetaAttr.charSet]?: string;
-    [MetaAttr.className]?: string;
-    [MetaAttr.content]?: string;
-    [MetaAttr.httpEquiv]?: string;
-    [MetaAttr.name]?: string;
-    [MetaAttr.property]?: string;
+    [MetaAttr.charSet]?: string
+    [MetaAttr.className]?: string
+    [MetaAttr.content]?: string
+    [MetaAttr.httpEquiv]?: string
+    [MetaAttr.name]?: string
+    [MetaAttr.property]?: string
 }
 
 export interface MetaTags {
-    charSet?: string;
-    className?: string;
-    content?: string;
-    httpEquiv?: string;
-    name?: string;
+    charSet?: string
+    className?: string
+    content?: string
+    httpEquiv?: string
+    name?: string
 }
 
 export interface PageTags {
-    link?: LinkTags;
-    meta?: MetaTags[];
-    script?: ScriptTags[];
-    style?: string[];
+    link?: LinkTags
+    meta?: MetaTags[]
+    script?: ScriptTags[]
+    style?: string[]
 }
 
 // Must be in this order so the attributes are built per SEO team's specifications.
@@ -90,12 +91,16 @@ export enum ScriptAttr {
 }
 
 export interface ScriptData {
-    [ScriptAttr.async]?: boolean;
-    custom?: {[key: string]: string};
-    [ScriptAttr.defer]?: boolean;
-    [ScriptAttr.src]?: string;
-    [ScriptAttr.type]?: string;
-    value?: string;
+    [ScriptAttr.async]?: boolean
+    custom?: { [key: string]: string }
+    [ScriptAttr.defer]?: boolean
+    [ScriptAttr.src]?: string
+    [ScriptAttr.type]?: string
+    value?: string
+}
+
+export interface ScriptCallData extends ScriptData {
+    [ScriptAttr.src]: string
 }
 
 export interface ScriptTags {
