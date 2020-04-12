@@ -4,6 +4,7 @@
 /node_modules
 
 # testing
+/.coverage
 /coverage
 /e2e/compiled
 /e2e/error-shots

@@ -13,7 +13,7 @@ interface IndexProps {
     root: string
 }
 
-const MetaMusicIndex: NextPage<IndexProps> = ({ root }) => {
+const MetaMusicIndex: NextPage<IndexProps> = ({ root }): React.ReactElement => {
     return (
         <>
             <Head data={{ title: 'Meta Music' }} default={pageTags} root={root} />
