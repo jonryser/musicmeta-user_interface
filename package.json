@@ -24,6 +24,7 @@
         "react-dom": "^16.13.0"
     },
     "devDependencies": {
+        "@apollo/react-testing": "^3.1.4",
         "@types/enzyme": "^3.10.5",
         "@types/enzyme-adapter-react-16": "^1.0.6",
         "@types/jest": "^25.1.4",
@@ -50,7 +51,7 @@
     },
     "resolutions": {},
     "scripts": {
-        "dev": "dotenv next dev",
+        "dev": "dotenv next",
         "build": "next build",
         "lint": "tslint -p tsconfig.json -t verbose",
         "start": "next start",
