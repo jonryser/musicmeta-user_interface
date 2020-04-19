@@ -102,7 +102,7 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
                     }
                     if (Object.keys(props).length + 1) {
                         const key: string =
-                            `${(props.rel || ``)}${(props.hreflang || ``)}${(removeProtocolOrSlash(props.href) || ``)}`;
+                            `${(props.rel || ``)}${(props.hrefLang || ``)}${(removeProtocolOrSlash(props.href) || ``)}`;
                         return (
                             <React.Fragment key={`headLink${index}`}>
                                 <link key={`link-${key || index}`} {...props} />
