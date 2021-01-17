@@ -42,7 +42,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # IDE Stuff
-.code-workspace
+*.code-workspace
+!default.code-workspace
 .idea
 .project
 .next/

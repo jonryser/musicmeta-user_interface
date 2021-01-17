@@ -3,7 +3,7 @@
     "bierner.markdown-preview-github-styles",
     "davidanson.vscode-markdownlint",
     "esbenp.prettier-vscode",
-    "prisma.vscode-graphql",
+    "graphql.vscode-graphql",
     "shardulm94.trailing-spaces",
   ]
 }
