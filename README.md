@@ -24,13 +24,13 @@ Download and install the main dependencies for your specific environment.
 
 1. Open a terminal in project root.
 1. Run `yarn` - Required only when installing packages.
-1. Run `yarn dev` this will bootup the local devlopment server.
+1. Run `yarn dev` this will bootup the local development server.
 1. On success, you can view the website in any browser at `http://localhost:3000/`
     - It will open automatically in your default browser
 
 ## Custom Tasks
 
-### Generating Componenent from Templates
+### Generating Component from Templates
 
 1. Open a terminal and jump to project folder.
 1. Run `yarn gc`
