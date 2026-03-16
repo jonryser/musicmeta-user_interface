@@ -57,6 +57,6 @@
         "start": "next start",
         "init": "jest --init",
         "test": "jest",
-        "test:coverage": "jest --verbose --coverage --coverageDirectory .coverage"
+        "test:coverage": "jest --verbose --coverage"
     }
 }
