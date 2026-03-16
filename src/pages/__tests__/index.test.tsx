@@ -1,10 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import { MockedProvider } from '@apollo/react-testing'
 import Index from './../index'
-
-const dev = !(process.env.NODE_ENV
-    ? process.env.NODE_ENV.indexOf(`production`) + 1
-    : false);
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -16,8 +13,12 @@ jest.mock('next/config', () => () => ({
 
 describe(`index page`, () => {
     it(`should have App component`, () => {
-        const subject = mount((<Index root={`/`} />))
+        const subject = mount(
+            <MockedProvider mocks={[]} addTypename={false}>
+                <Index root={`/`} />
+            </MockedProvider>
+        )
 
-        expect(subject.find(`App`)).toHaveLength(1)
+        expect(subject.find(`MetaMusicIndex`)).toHaveLength(1)
     })
 })
