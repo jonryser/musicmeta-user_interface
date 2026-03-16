@@ -49,6 +49,10 @@ jobs:
           files: |
             **/*.md
             .markdownlint*
+          files_ignore: |
+            CLAUDE.md
+            .cursorrules
+            .github/copilot-instructions.md
 
       - name: Get changed JS project files
         if: steps.check-branch.outputs.skip != 'true'
