@@ -1,7 +1,9 @@
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 import { MockedProvider } from '@apollo/react-testing'
 import Index from './../index'
+import ROLES_QUERY from './../../../graphql/roles.query'
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -11,14 +13,29 @@ jest.mock('next/config', () => () => ({
     }
 }));
 
-describe(`index page`, () => {
-    it(`should have App component`, () => {
-        const subject = mount(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <Index root={`/`} />
-            </MockedProvider>
-        )
+const mocks = [
+    {
+        request: { query: ROLES_QUERY },
+        result: { data: { roles: [] } }
+    }
+]
 
-        expect(subject.find(`MetaMusicIndex`)).toHaveLength(1)
+describe(`index page`, () => {
+    it(`should have App component`, async () => {
+        let subject: ReturnType<typeof mount>
+
+        await act(async () => {
+            subject = mount(
+                <MockedProvider mocks={mocks} addTypename={false}>
+                    <Index root={`/`} />
+                </MockedProvider>
+            )
+
+            // Allow any pending effects / promises to resolve
+            await new Promise((resolve) => setImmediate(resolve))
+        })
+
+        subject!.update()
+        expect(subject!.find(`MetaMusicIndex`)).toHaveLength(1)
     })
 })
