@@ -2,8 +2,11 @@
   "recommendations": [
     "bierner.markdown-preview-github-styles",
     "davidanson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "prisma.vscode-graphql",
     "shardulm94.trailing-spaces",
+    "timonwong.shellcheck",
+    "wix.vscode-import-cost"
   ]
 }
