@@ -1,118 +1,119 @@
 name: Code Quality
 
 on:
-  pull_request:
-    branches: [develop, staging, main]
-    types: [opened, reopened, synchronize]
-  workflow_dispatch:
+    pull_request:
+        branches: [develop]
+        types: [opened, reopened, synchronize]
+    workflow_dispatch:
 
 jobs:
-  quality:
-    name: Quality
-    # The quality pipeline should not take more than 15 minutes.
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if PR should skip quality gate
-        id: check-branch
-        run: |
-          base="${{ github.base_ref }}"
-          head="${{ github.head_ref }}"
-          skip=false
-          # PRs from develop→staging or staging→main skip the gate (already gated on develop)
-          if [[ "$base" == "staging" && "$head" == "develop" ]]; then
-            skip=true
-          elif [[ "$base" == "main" && "$head" == "staging" ]]; then
-            skip=true
-          fi
-          echo "skip=${skip}" >> $GITHUB_OUTPUT
-          echo "Base: $base | Head: $head | Skip: $skip"
-        shell: bash
+    quality:
+        name: Quality
+        # The quality pipeline should not take more than 15 minutes.
+        timeout-minutes: 15
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check if PR should skip quality gate
+              id: check-branch
+              run: |
+                  base="${{ github.base_ref }}"
+                  head="${{ github.head_ref }}"
+                  skip=false
+                  # PRs from develop→staging or staging→main skip the gate (already gated on develop)
+                  if [[ "$base" == "staging" && "$head" == "develop" ]]; then
+                    skip=true
+                  elif [[ "$base" == "main" && "$head" == "staging" ]]; then
+                    skip=true
+                  fi
+                  echo "skip=${skip}" >> $GITHUB_OUTPUT
+                  echo "Base: $base | Head: $head | Skip: $skip"
+              shell: bash
 
-      - name: Get Info
-        if: steps.check-branch.outputs.skip != 'true'
-        id: job-info
-        uses: generalui/github-workflow-accelerators/.github/actions/job-info@1.0.1-job-info
+            - name: Get Info
+              if: steps.check-branch.outputs.skip != 'true'
+              id: job-info
+              uses: generalui/github-workflow-accelerators/.github/actions/job-info@1.0.1-job-info
 
-      - name: Get changed Code Quality workflow
-        if: steps.check-branch.outputs.skip != 'true'
-        id: changed-code-quality
-        uses: tj-actions/changed-files@v47
-        with:
-          files: .github/workflows/code-quality.yml
+            - name: Get changed Code Quality workflow
+              if: steps.check-branch.outputs.skip != 'true'
+              id: changed-code-quality
+              uses: tj-actions/changed-files@v47
+              with:
+                  files: .github/workflows/code-quality.yml
 
-      - name: Get changed markdown files
-        if: steps.check-branch.outputs.skip != 'true'
-        id: changed-markdown
-        uses: tj-actions/changed-files@v47
-        with:
-          files: |
-            **/*.md
-            .markdownlint*
-          files_ignore: |
-            CLAUDE.md
-            .cursorrules
-            .github/copilot-instructions.md
+            - name: Get changed markdown files
+              if: steps.check-branch.outputs.skip != 'true'
+              id: changed-markdown
+              uses: tj-actions/changed-files@v47
+              with:
+                  files: |
+                      **/*.md
+                      .markdownlint*
+                  files_ignore: |
+                      CLAUDE.md
+                      .cursorrules
+                      .github/copilot-instructions.md
 
-      - name: Get changed JS project files
-        if: steps.check-branch.outputs.skip != 'true'
-        id: changed-js
-        uses: tj-actions/changed-files@v47
-        with:
-          files: |
-            src/**
-            graphql/**
-            package.json
-            tsconfig*
-            jest*
-            .eslint*
-            .prettier*
-          files_ignore: |
-            **/*.md
+            - name: Get changed JS project files
+              if: steps.check-branch.outputs.skip != 'true'
+              id: changed-js
+              uses: tj-actions/changed-files@v47
+              with:
+                  files: |
+                      src/**
+                      graphql/**
+                      package.json
+                      tsconfig*
+                      jest*
+                      .eslint*
+                      .prettier*
+                  files_ignore: |
+                      **/*.md
 
-      - name: Should lint docs
-        if: steps.check-branch.outputs.skip != 'true'
-        id: lint-docs
-        run: |
-          run=false
-          if [[ "${{ steps.changed-markdown.outputs.any_modified }}" == "true" ]] || \
-             [[ "${{ steps.changed-code-quality.outputs.any_modified }}" == "true" ]] || \
-             [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            run=true
-          fi
-          echo "run=${run}" >> $GITHUB_OUTPUT
-        shell: bash
+            - name: Should lint docs
+              if: steps.check-branch.outputs.skip != 'true'
+              id: lint-docs
+              run: |
+                  run=false
+                  if [[ "${{ steps.changed-markdown.outputs.any_modified }}" == "true" ]] || \
+                     [[ "${{ steps.changed-code-quality.outputs.any_modified }}" == "true" ]] || \
+                     [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                    run=true
+                  fi
+                  echo "run=${run}" >> $GITHUB_OUTPUT
+              shell: bash
 
-      - name: Should run JS checks
-        if: steps.check-branch.outputs.skip != 'true'
-        id: check-js
-        run: |
-          run=false
-          if [[ "${{ steps.changed-js.outputs.any_modified }}" == "true" ]] || \
-             [[ "${{ steps.changed-code-quality.outputs.any_modified }}" == "true" ]] || \
-             [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            run=true
-          fi
-          echo "run=${run}" >> $GITHUB_OUTPUT
-        shell: bash
+            - name: Should run JS checks
+              if: steps.check-branch.outputs.skip != 'true'
+              id: check-js
+              run: |
+                  run=false
+                  if [[ "${{ steps.changed-js.outputs.any_modified }}" == "true" ]] || \
+                     [[ "${{ steps.changed-code-quality.outputs.any_modified }}" == "true" ]] || \
+                     [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                    run=true
+                  fi
+                  echo "run=${run}" >> $GITHUB_OUTPUT
+              shell: bash
 
-      - name: Lint all documentation
-        if: steps.lint-docs.outputs.run == 'true'
-        uses: DavidAnson/markdownlint-cli2-action@v14
-        with:
-          globs: |
-            **/*.md
+            - name: Lint all documentation
+              if: steps.lint-docs.outputs.run == 'true'
+              uses: DavidAnson/markdownlint-cli2-action@v22
+              with:
+                  globs: |
+                      **/*.md
 
-      - name: Lint and test
-        if: steps.check-js.outputs.run == 'true'
-        uses: generalui/github-workflow-accelerators/.github/actions/lint-test-yarn@main
-        with:
-          checkout-code: 'yes'
-          node-version: '20'
-          upload-coverage: 'yes'
-          branch: ${{ steps.job-info.outputs.pr_branch }}
+            - name: Lint and test
+              if: steps.check-js.outputs.run == 'true'
+              uses: generalui/github-workflow-accelerators/.github/actions/lint-test-yarn@1.0.2-lint-test-yarn
+              with:
+                  checkout-code: 'yes'
+                  node-version: ${{ vars.NODE_VERSION || 'latest' }}
+                  yarn-version: ${{ vars.YARN_VERSION || 'latest' }}
+                  upload-coverage: 'yes'
+                  branch: ${{ steps.job-info.outputs.pr_branch }}
 
-      - name: Default Job Success
-        if: steps.lint-docs.outputs.run == 'false' && steps.check-js.outputs.run == 'false'
-        run: exit 0
-        shell: bash
+            - name: Default Job Success
+              if: steps.lint-docs.outputs.run == 'false' && steps.check-js.outputs.run == 'false'
+              run: exit 0
+              shell: bash
