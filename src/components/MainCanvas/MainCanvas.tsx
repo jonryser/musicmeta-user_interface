@@ -1,11 +1,11 @@
 import React from 'react'
 import { NextPage } from 'next'
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import MainCanvasProps from './MainCanvasProps'
 // Content.
 import ROLES_QUERY from './../../../graphql/roles.query'
 
-const MainCanvas: NextPage<MainCanvasProps> = ({ some }) => {
+const MainCanvas: NextPage<MainCanvasProps> = () => {
     // Create a query hook
     const { data, loading, error } = useQuery(ROLES_QUERY);
 

@@ -1,8 +1,10 @@
+import type React from 'react';
+
 export default class HeadState {
-    link?: JSX.Element[];
-    meta?: JSX.Element[];
-    script?: JSX.Element[];
-    scriptCall?: JSX.Element[];
-    style?: JSX.Element;
-    title?: JSX.Element;
+    link?: React.JSX.Element[];
+    meta?: React.JSX.Element[];
+    script?: React.JSX.Element[];
+    scriptCall?: React.JSX.Element[];
+    style?: React.JSX.Element;
+    title?: React.JSX.Element;
 }

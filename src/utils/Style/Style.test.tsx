@@ -19,7 +19,7 @@ describe(`Style `, () => {
             Infinity: `firstClass`,
         };
         const baseClass: string = `baseClass`;
-        let value: string = buildClassName(classBreakpointObj, baseClass, 1024);
+        const value: string = buildClassName(classBreakpointObj, baseClass, 1024);
         expect(value).toEqual(`baseClass firstClass`);
     });
 
@@ -73,7 +73,7 @@ describe(`Style `, () => {
 
     it(`buildConfigClasses should return the baseClass.`, () => {
         let classArray: any;
-        let baseClass: string = `baseClass`;
+        const baseClass: string = `baseClass`;
         let value: string = buildConfigClasses(classArray, baseClass, 1024);
         expect(value).toEqual(`baseClass`);
         value = buildConfigClasses(classArray, baseClass);
@@ -90,7 +90,7 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return a space separated string of classes when the classArray is a string.`, () => {
-        let classArray: any = `firstClass`;
+        const classArray: any = `firstClass`;
         let baseClass: string = `baseClass`;
         let value: string = buildConfigClasses(classArray, baseClass, 1024);
         expect(value).toEqual(`baseClass firstClass`);
@@ -102,8 +102,8 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return a space separated string of classes when the classArray is a string Array.`, () => {
-        let classArray: any = [`firstClass`];
-        let baseClass: string = `baseClass`;
+        const classArray: any = [`firstClass`];
+        const baseClass: string = `baseClass`;
         let value: string = buildConfigClasses(classArray, baseClass, 1024);
         expect(value).toEqual(`baseClass firstClass`);
         value = buildConfigClasses(classArray, baseClass);
@@ -111,8 +111,8 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return the baseClass when the classArray is an empty Array.`, () => {
-        let classArray: any = [``];
-        let baseClass: string = `baseClass`;
+        const classArray: any = [``];
+        const baseClass: string = `baseClass`;
         let value: string = buildConfigClasses(classArray, baseClass, 1024);
         expect(value).toEqual(`baseClass`);
         value = buildConfigClasses(classArray, baseClass);
@@ -120,7 +120,7 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return a space separated string of classes when the classArray is an array of complex objects`, () => {
-        let classArray: any = {
+        const classArray: any = {
             Infinity: {
                 baseClass: `firstClass`,
                 variationId: `plokijuh`,
@@ -135,7 +135,7 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return a space separated string of classes when the classData is an array of shallow objects`, () => {
-        let classData: any = [{ Infinity: 'firstClass' }];
+        const classData: any = [{ Infinity: 'firstClass' }];
         let baseClass: string = `baseClass`;
         let value: string = buildConfigClasses(classData, baseClass, 1024);
         expect(value).toEqual(`baseClass firstClass`);
@@ -145,7 +145,7 @@ describe(`Style `, () => {
     });
 
     it(`buildConfigClasses should return a space separated string of classes when the classArray is a complex object`, () => {
-        let classArray: any = {
+        const classArray: any = {
             Infinity: {
                 baseClass: `firstClass`,
                 variationId: `plokijuh`,
@@ -163,7 +163,7 @@ describe(`Style `, () => {
         `buildConfigClasses should return a space separated string of classes ` +
         `when the classArray is a complex object and a string.`,
         () => {
-            let classArray: any = [{
+            const classArray: any = [{
                 Infinity: {
                     baseClass: `firstClass`,
                     variationId: `plokijuh`,
@@ -183,7 +183,7 @@ describe(`Style `, () => {
             `firstClass`,
             `secondClass`,
         ];
-        let value: string[] = complexClasses(classArray, 1024);
+        const value: string[] = complexClasses(classArray, 1024);
         expect(value).toEqual([`firstClass`, `secondClass`]);
     });
 
@@ -194,7 +194,7 @@ describe(`Style `, () => {
                 variationId: `plokijuh`,
             },
         };
-        let value: string[] = complexClasses(classBreakpointObj, 1024);
+        const value: string[] = complexClasses(classBreakpointObj, 1024);
         expect(value).toEqual([`baseClass`]);
     });
 
@@ -203,13 +203,13 @@ describe(`Style `, () => {
             baseClass: `baseClass`,
             variationId: `plokijuh`,
         };
-        let value: string[] = complexClasses(classObj, 1024);
+        const value: string[] = complexClasses(classObj, 1024);
         expect(value).toEqual([`baseClass`]);
     });
 
     it(`complexClasses should return "firstClass" as an Array.`, () => {
         const firstClass: string = `firstClass`;
-        let value: string[] = complexClasses(firstClass, 1024);
+        const value: string[] = complexClasses(firstClass, 1024);
         expect(value).toEqual([`firstClass`]);
     });
 });
