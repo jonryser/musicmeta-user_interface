@@ -7,8 +7,8 @@ Tags and GitHub releases are environment-scoped: a version is suffixed based on 
 
 ## Tag Format
 
-| Environment | Tag format       | Example           |
-| ----------- | ---------------- | ----------------- |
+| Environment | Tag format        | Example          |
+| ----------- | ----------------- | ---------------- |
 | `develop`   | `VERSION.develop` | `1.1.0.develop`  |
 | `staging`   | `VERSION.staging` | `1.1.0.staging`  |
 | `main`      | `VERSION`         | `1.1.0`          |
