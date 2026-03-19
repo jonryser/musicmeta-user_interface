@@ -1,6 +1,6 @@
 {
     "name": "metamusic_user_interface",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "An application that allows users to record and store meta data for songs, projects, and tracks as they are being written, recorded, and delivered from the ground up.",
     "main": "src/pages/index.tsx",
     "repository": "git@github.com:jonryser/musicmeta.git",
