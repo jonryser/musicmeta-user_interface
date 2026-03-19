@@ -65,9 +65,9 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
         };
     }
 
-    private getLinks = (link: string[], rel: string, asValue?: string): JSX.Element[] => {
+    private getLinks = (link: string[], rel: string, asValue?: string): React.JSX.Element[] => {
         const linkTags: string[] = link && Array.isArray(link) ? link : [];
-        return linkTags.map((linkTag: string, index: number): JSX.Element => {
+        return linkTags.map((linkTag: string, index: number): React.JSX.Element => {
             if (linkTag && typeof linkTag === 'string') {
                 const props: LinkData = {
                     [LinkAttr.href]: linkTag.replace(ROOT_TOKEN, this.props.root),
@@ -84,17 +84,17 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
         });
     }
 
-    private getLinkTags = (link: LinkData[]): JSX.Element[] => {
-        let linkArray: JSX.Element[] = [];
+    private getLinkTags = (link: LinkData[]): React.JSX.Element[] => {
+        let linkArray: React.JSX.Element[] = [];
         const linkDefaults: LinkTags = this.props.default && this.props.default.link ? this.props.default.link : {};
-        const dnsfetch: JSX.Element[] = this.getLinks(linkDefaults.dnsFetch, `dns-prefetch`);
-        const preconnect: JSX.Element[] = this.getLinks(linkDefaults.preconnect, `preconnect`);
-        const preloadFetch: JSX.Element[] = this.getLinks(linkDefaults.preloadFetch, `preload`, `fetch`);
-        const preloadScript: JSX.Element[] = this.getLinks(linkDefaults.preloadScript, `preload`, `script`);
-        const preloadStyle: JSX.Element[] = this.getLinks(linkDefaults.preloadStyle, `preload`, `style`);
-        const stylesheet: JSX.Element[] = this.getLinks(linkDefaults.stylesheet, `stylesheet`);
+        const dnsfetch: React.JSX.Element[] = this.getLinks(linkDefaults.dnsFetch, `dns-prefetch`);
+        const preconnect: React.JSX.Element[] = this.getLinks(linkDefaults.preconnect, `preconnect`);
+        const preloadFetch: React.JSX.Element[] = this.getLinks(linkDefaults.preloadFetch, `preload`, `fetch`);
+        const preloadScript: React.JSX.Element[] = this.getLinks(linkDefaults.preloadScript, `preload`, `script`);
+        const preloadStyle: React.JSX.Element[] = this.getLinks(linkDefaults.preloadStyle, `preload`, `style`);
+        const stylesheet: React.JSX.Element[] = this.getLinks(linkDefaults.stylesheet, `stylesheet`);
         if (link && Array.isArray(link) && link.length > 0) {
-            linkArray = link.map((linkData: LinkData, index: number): JSX.Element => {
+            linkArray = link.map((linkData: LinkData, index: number): React.JSX.Element => {
                 if (linkData && typeof linkData === 'object') {
                     const props: LinkData = {};
                     for (const prop in LinkAttr) {
@@ -121,11 +121,11 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
         return linkArray;
     }
 
-    private getMetaTags = (meta: MetaData[]): JSX.Element[] => {
+    private getMetaTags = (meta: MetaData[]): React.JSX.Element[] => {
         const metaDefaults: MetaData[] = this.props.default && this.props.default.meta ? this.props.default.meta : [];
         const metaTags: MetaData[] = meta && Array.isArray(meta) ? meta : [];
         const allMetaTags: MetaData[] = metaDefaults.concat(metaTags);
-        return allMetaTags.map((metaData: MetaData, index: number): JSX.Element => {
+        return allMetaTags.map((metaData: MetaData, index: number): React.JSX.Element => {
             if (metaData && typeof metaData === 'object') {
                 const props: MetaData = {};
                 for (const prop in MetaAttr) {
@@ -153,9 +153,9 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
      * Processes the default script data.
      * This script data has a different structure than the data returned from the CMS.
      */
-    private getScripts = (scripts: ScriptTags[]): JSX.Element[] => {
+    private getScripts = (scripts: ScriptTags[]): React.JSX.Element[] => {
         const scriptTags: ScriptTags[] = scripts && Array.isArray(scripts) ? scripts : [];
-        return scriptTags.map((scriptTag: ScriptTags, index: number): JSX.Element => {
+        return scriptTags.map((scriptTag: ScriptTags, index: number): React.JSX.Element => {
             if (scriptTag && typeof scriptTag === 'object') {
                 for (const script in scriptTag) {
                     if (scriptTag.hasOwnProperty(script)) {
@@ -202,12 +202,12 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
      * Processes dynamic script data.
      * This script data has a different structure than the default data.
      */
-    private getScriptTags = (script: ScriptData[]): JSX.Element[] => {
-        let scriptArray: JSX.Element[] = [];
-        let seoTags: JSX.Element[] = [];
+    private getScriptTags = (script: ScriptData[]): React.JSX.Element[] => {
+        let scriptArray: React.JSX.Element[] = [];
+        let seoTags: React.JSX.Element[] = [];
         const scriptDeafults: ScriptTags[] =
             this.props.default && this.props.default.script ? this.props.default.script : [];
-        const defaultTags: JSX.Element[] = this.getScripts(scriptDeafults);
+        const defaultTags: React.JSX.Element[] = this.getScripts(scriptDeafults);
         if (script && Array.isArray(script) && script.length > 0) {
             scriptArray = script.map((scriptData: ScriptData, index: number) => {
                 if (scriptData.type && scriptData.value) {
@@ -255,7 +255,7 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
         return seoTags.concat(defaultTags.concat(scriptArray));
     }
 
-    private getStyles = (styles?: string[]): JSX.Element => {
+    private getStyles = (styles?: string[]): React.JSX.Element => {
         const initialStyles: string[] = this.props.default && this.props.default.style ? this.props.default.style : [];
         const styleTags: string[] = styles && Array.isArray(styles) ? styles : [];
         const allStyleTags: string[] = initialStyles.concat(styleTags);
@@ -268,7 +268,7 @@ export default class Head extends React.PureComponent<HeadProps, HeadState> {
         return content && <React.Fragment key={`headStyle`}><style>{content}</style></React.Fragment>;
     }
 
-    private getTitleTag = (title: string): JSX.Element => {
+    private getTitleTag = (title: string): React.JSX.Element => {
         return title && <React.Fragment><title key={`title-${title}`}>{title}</title><>{'\n'}</></React.Fragment>;
     }
 }

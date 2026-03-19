@@ -1,4 +1,7 @@
+import type React from 'react';
+
 export default interface HeadProps {
+    children?: React.ReactNode
     data: HeadData
     default?: PageTags
     root?: string

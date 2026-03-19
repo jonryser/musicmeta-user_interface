@@ -55,7 +55,7 @@ describe('ViewPort ', () => {
             top: 301,
             width: 500,
         };
-        let value: boolean = isInViewport(inViewport);
+        const value: boolean = isInViewport(inViewport);
         expect(value).toBeTruthy();
     });
 });

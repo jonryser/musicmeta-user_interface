@@ -13,38 +13,25 @@ module.exports = {
         'json',
     ],
     moduleNameMapper: {
-        "^react-native$": "react-native-web",
         '^~/(.*)': '<rootDir>/src/$1',
+        '^next/head$': '<rootDir>/src/__mocks__/nextHead.tsx',
     },
     modulePaths: [],
-    preset: "ts-jest",
+    preset: 'ts-jest',
     roots: ['<rootDir>'],
-    setupFiles: ["<rootDir>/jest.setup.js"],
-    setupFilesAfterEnv: ['jest-expect-message'],
-    snapshotSerializers: ["enzyme-to-json/serializer"],
-    testEnvironment: 'jest-environment-jsdom-fourteen',
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js', 'jest-expect-message'],
+    testEnvironment: 'jest-environment-jsdom',
     testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/build/', '<rootDir>/docs/', '<rootDir>/node_modules/'],
     testMatch: [
         '<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)',
         '<rootDir>/src/**/test.(j|t)s?(x)',
         '<rootDir>/src/**/*.test.(j|t)s?(x)',
     ],
-    testURL: 'http://localhost',
     transform: {
-        '^.+\\.tsx?$': 'ts-jest',
-        '^.+\\.svg$': 'jest-svg-transformer',
+        '^.+\\.tsx?$': ['ts-jest', {
+            tsconfig: '<rootDir>/tsconfig.jest.json',
+            diagnostics: false,
+        }],
     },
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
-
-    // https://github.com/zeit/next.js/issues/8663#issue-490553899
-    globals: {
-        // we must specify a custom tsconfig for tests because we need the typescript transform
-        // to transform jsx into js rather than leaving it jsx such as the next build requires. you
-        // can see this setting in tsconfig.jest.json -> "jsx": "react"
-        "ts-jest": {
-            tsConfig: '<rootDir>/tsconfig.jest.json',
-            diagnostics: false
-        },
-        window: {}
-    }
-}
+};

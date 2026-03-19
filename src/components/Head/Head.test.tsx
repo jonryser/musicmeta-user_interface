@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { render } from '@testing-library/react';
 
 // Components.
 import { HeadData } from './HeadProps';
@@ -91,48 +91,25 @@ describe(`Head `, () => {
     it(
         `should render correctly initially and then when the passed data changes and again when no data is passed.`,
         () => {
-            const wrapper = shallow((
-                <Head
-                    data={headData1}
-                />
-            ));
-            expect(wrapper).toBeDefined();
-            wrapper.setProps({
-                data: headData2,
-            });
-            expect(wrapper).toBeDefined();
-            wrapper.setProps({
-                data: headData3,
-            });
-            expect(wrapper).toBeDefined();
+            const { rerender } = render(<Head data={headData1} />);
+            rerender(<Head data={headData2} />);
+            rerender(<Head data={headData3} />);
         },
     );
 
     it(
         `should render correctly initially and then when new data is passed that is identical.`,
         () => {
-            const wrapper = shallow((
-                <Head
-                    data={headData1}
-                />
-            ));
-            expect(wrapper).toBeDefined();
-            wrapper.setProps({
-                data: headData1,
-            });
-            expect(wrapper).toBeDefined();
+            const { rerender } = render(<Head data={headData1} />);
+            rerender(<Head data={headData1} />);
         },
     );
 
     it(
         `should render correctly when data is passed does not contain complete or valid content.`,
         () => {
-            const wrapper = shallow((
-                <Head
-                    data={headData4}
-                />
-            ));
-            expect(wrapper).toBeDefined();
+            const { container } = render(<Head data={headData4} />);
+            expect(container).toBeDefined();
         },
     );
 
@@ -140,16 +117,8 @@ describe(`Head `, () => {
         `should NOT render when NO data is passed and ` +
         `should render when props are updated with data.`,
         () => {
-            const wrapper = shallow((
-                <Head
-                    data={undefined}
-                />
-            ));
-            expect(wrapper).toBeDefined();
-            wrapper.setProps({
-                data: undefined,
-            });
-            expect(wrapper).toBeDefined();
+            const { rerender } = render(<Head data={undefined} />);
+            rerender(<Head data={undefined} />);
         },
     );
 
@@ -157,16 +126,8 @@ describe(`Head `, () => {
         `should NOT render when NO data is passed and ` +
         `should still not render when props are updated with no data.`,
         () => {
-            const wrapper = shallow((
-                <Head
-                    data={undefined}
-                />
-            ));
-            expect(wrapper).toBeDefined();
-            wrapper.setProps({
-                data: headData1,
-            });
-            expect(wrapper).toBeDefined();
+            const { rerender } = render(<Head data={undefined} />);
+            rerender(<Head data={headData1} />);
         },
     );
 });
