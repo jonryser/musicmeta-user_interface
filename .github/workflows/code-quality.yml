@@ -113,7 +113,7 @@ jobs:
 
             - name: Get version from package.json
               id: version
-              if: steps.check-version.outputs.run == true || github.event_name == workflow_dispatch
+              if: steps.check-version.outputs.run == 'true' || github.event_name == 'workflow_dispatch'
               run: |
                   version=$(cat package.json | jq -r '.version')
                   version_tag="${version}.develop"
@@ -124,7 +124,7 @@ jobs:
               shell: bash
 
             - name: Check for existing tag
-              if: steps.check-version.outputs.run == true || github.event_name == workflow_dispatch
+              if: steps.check-version.outputs.run == 'true' || github.event_name == 'workflow_dispatch'
               run: |
                   tag="${{ steps.version.outputs.version_tag }}"
                   if git show-ref --tags --verify --quiet "refs/tags/${tag}"; then
