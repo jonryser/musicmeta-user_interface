@@ -5795,10 +5795,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21":
-  version: 4.17.21
-  resolution: "lodash@npm:4.17.21"
-  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+"lodash@npm:4.17.23, lodash@npm:^4.17.21":
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 7daad39758a72872e94651630fbb54ba76868f904211089721a64516ce865506a759d9ad3d8ff22a2a49a50a09db5d27c36f22762d21766e47e3ba918d6d7bab
   languageName: node
   linkType: hard
 
@@ -5806,13 +5806,6 @@ __metadata:
   version: 4.17.15
   resolution: "lodash@npm:4.17.15"
   checksum: bb689bc88c0645b7002a045cdbe32292ae51d5d2a6f6a5272cb5a5ace9b06700bb3d30c6be6ecfae9a70f9c943f60e90765033fc7ff706cf9219374eeda314ad
-  languageName: node
-  linkType: hard
-
-"lodash@npm:^4.17.21":
-  version: 4.17.23
-  resolution: "lodash@npm:4.17.23"
-  checksum: 7daad39758a72872e94651630fbb54ba76868f904211089721a64516ce865506a759d9ad3d8ff22a2a49a50a09db5d27c36f22762d21766e47e3ba918d6d7bab
   languageName: node
   linkType: hard
 
@@ -6007,7 +6000,7 @@ __metadata:
     jest: 29.7.0
     jest-environment-jsdom: 29.7.0
     jest-expect-message: 1.1.3
-    lodash: 4.17.21
+    lodash: 4.17.23
     markdownlint-cli2: 0.21.0
     next: 16.1.6
     react: 19.0.0
