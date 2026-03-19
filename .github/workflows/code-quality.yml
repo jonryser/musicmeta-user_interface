@@ -13,6 +13,11 @@ jobs:
         timeout-minutes: 15
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+
             - name: Check if PR should skip quality gate
               id: check-branch
               run: |
@@ -94,6 +99,39 @@ jobs:
                     run=true
                   fi
                   echo "run=${run}" >> $GITHUB_OUTPUT
+              shell: bash
+
+            - name: Should check version
+              id: check-version
+              run: |
+                  run=false
+                  if [[ "${{ steps.changed-js.outputs.any_modified }}" == "true" ]]; then
+                    run=true
+                  fi
+                  echo "run=${run}" >> $GITHUB_OUTPUT
+              shell: bash
+
+            - name: Get version from package.json
+              id: version
+              if: steps.check-version.outputs.run == true || github.event_name == workflow_dispatch
+              run: |
+                  version=$(cat package.json | jq -r '.version')
+                  version_tag="${version}.develop"
+                  echo "version_tag=${version_tag}" >> $GITHUB_OUTPUT
+                  echo "::group::Version Tag"
+                  echo 'Version Tag: '${version_tag}
+                  echo "::endgroup::"
+              shell: bash
+
+            - name: Check for existing tag
+              if: steps.check-version.outputs.run == true || github.event_name == workflow_dispatch
+              run: |
+                  tag="${{ steps.version.outputs.version_tag }}"
+                  if git show-ref --tags --verify --quiet "refs/tags/${tag}"; then
+                    echo "The tag ${tag} already exists. Please update the version in package.json."
+                    exit 1
+                  fi
+                  echo "Version ${tag} is new. Proceed with PR."
               shell: bash
 
             - name: Lint all documentation
