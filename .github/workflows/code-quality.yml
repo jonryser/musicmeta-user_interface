@@ -145,7 +145,7 @@ jobs:
               if: steps.check-js.outputs.run == 'true'
               uses: generalui/github-workflow-accelerators/.github/actions/lint-test-yarn@1.0.2-lint-test-yarn
               with:
-                  checkout-code: 'yes'
+                  checkout-code: 'no'
                   node-version: ${{ vars.NODE_VERSION || 'latest' }}
                   yarn-version: ${{ vars.YARN_VERSION || 'latest' }}
                   upload-coverage: 'yes'
