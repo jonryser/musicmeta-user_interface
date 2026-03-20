@@ -13,9 +13,10 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ user }) {
-            const allowedEmail = process.env.ALLOWED_OAUTH_EMAIL;
-            if (!allowedEmail) return false;
-            return user.email === allowedEmail;
+            const raw = process.env.ALLOWED_OAUTH_EMAILS ?? '';
+            const allowedEmails = raw.split(',').map((e) => e.trim()).filter(Boolean);
+            if (allowedEmails.length === 0) return false;
+            return allowedEmails.includes(user.email ?? '');
         },
         async jwt({ token, account }) {
             if (account?.access_token) {
