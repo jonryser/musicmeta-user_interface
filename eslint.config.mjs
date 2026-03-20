@@ -13,6 +13,7 @@ export default [
             '*.config.js',
             '*.config.mjs',
             '*.setup.js',
+            'src/graphql/generated/**',
         ],
     },
     ...coreWebVitals,
