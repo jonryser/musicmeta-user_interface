@@ -8,6 +8,7 @@ export default [
             '.next/**',
             'node_modules/**',
             'build/**',
+            '.coverage/**',
             'coverage/**',
             'templates/**',
             '*.config.js',

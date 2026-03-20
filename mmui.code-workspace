@@ -11,6 +11,7 @@
             ".cursorrules": "plaintext",
             ".env.*": "dotenv",
             ".env-*": "dotenv",
+            ".markdownlint-cli2.jsonc": "json",
         },
         "files.eol": "\n",
         "[jsonc]": {

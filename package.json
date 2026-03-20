@@ -52,5 +52,8 @@
         "test:coverage": "jest --verbose --coverage",
         "codegen": "graphql-codegen --config codegen.yml"
     },
+    "engines": {
+        "node": ">=25.7.0"
+    },
     "packageManager": "yarn@3.5.1"
 }
