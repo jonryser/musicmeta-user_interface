@@ -15,6 +15,7 @@ module.exports = {
     moduleNameMapper: {
         '^~/(.*)': '<rootDir>/src/$1',
         '^next/head$': '<rootDir>/src/__mocks__/nextHead.tsx',
+        '\\.module\\.css$': '<rootDir>/src/__mocks__/styleMock.js',
     },
     modulePaths: [],
     preset: 'ts-jest',

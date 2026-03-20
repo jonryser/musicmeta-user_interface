@@ -1,0 +1,77 @@
+type Work {
+  guid: ID!
+  title: String!
+  description: String
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+  versions: [WorkVersion!]!
+  credits: [Credit!]!
+}
+
+type WorkVersion {
+  guid: ID!
+  title: String!
+  description: String
+  work: Work!
+  parentVersion: WorkVersion
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Person {
+  guid: ID!
+  firstName: String!
+  lastName: String!
+  email: String
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Place {
+  guid: ID!
+  name: String!
+  description: String
+  city: String
+  state: String
+  country: String
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Role {
+  guid: ID!
+  name: String!
+  description: String
+}
+
+type Credit {
+  guid: ID!
+  work: Work!
+  person: Person!
+  role: Role!
+  instrument: String
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Query {
+  works: [Work!]!
+  work(guid: ID!): Work
+  people: [Person!]!
+  person(guid: ID!): Person
+  places: [Place!]!
+  place(guid: ID!): Place
+  creditsByWork(workGuid: ID!): [Credit!]!
+  roles: [Role!]!
+}
+
+type Mutation {
+  createWork(title: String!, description: String): Work!
+  updateWork(guid: ID!, title: String, description: String): Work!
+  deleteWork(guid: ID!): Work!
+}

@@ -2,7 +2,7 @@
 const nextConfig = {
   distDir: `dist`,
   env: {
-    GRAPHQL_URL: process.env.GRAPHQL_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   turbopack: {
     root: __dirname,
