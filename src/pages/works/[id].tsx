@@ -11,6 +11,9 @@ import {
     useDeleteWorkMutation,
 } from '../../graphql/generated/types';
 import styles from './workDetail.module.css';
+import { WORKS } from '../../constants/labels';
+import { STATUS, ERRORS, EMPTY, CONFIRM, LOADING_STATES } from '../../constants/messages';
+import { BREADCRUMBS } from '../../constants/navigation';
 
 const WorkDetailPage: NextPage = () => {
     const router = useRouter();
@@ -53,7 +56,7 @@ const WorkDetailPage: NextPage = () => {
             await refetch();
         } catch (err) {
             setUpdateError(
-                err instanceof Error ? err.message : 'Failed to update title.',
+                err instanceof Error ? err.message : ERRORS.FAILED_UPDATE_TITLE,
             );
         }
         setEditingTitle(false);
@@ -74,7 +77,7 @@ const WorkDetailPage: NextPage = () => {
             setUpdateError(
                 err instanceof Error
                     ? err.message
-                    : 'Failed to update description.',
+                    : ERRORS.FAILED_UPDATE_DESCRIPTION,
             );
         }
         setEditingDescription(false);
@@ -92,18 +95,13 @@ const WorkDetailPage: NextPage = () => {
 
     const handleDelete = async () => {
         if (!guid) return;
-        if (
-            !confirm(
-                `Delete "${work?.title}"? This cannot be undone.`,
-            )
-        )
-            return;
+        if (!confirm(CONFIRM.DELETE_WORK(work?.title ?? ''))) return;
         try {
             await deleteWork({ variables: { guid } });
             router.push('/works');
         } catch (err) {
             setUpdateError(
-                err instanceof Error ? err.message : 'Failed to delete work.',
+                err instanceof Error ? err.message : ERRORS.FAILED_DELETE_WORK,
             );
         }
     };
@@ -111,7 +109,7 @@ const WorkDetailPage: NextPage = () => {
     if (loading) {
         return (
             <ProtectedLayout>
-                <p className={styles.status}>Loading…</p>
+                <p className={styles.status}>{STATUS.LOADING_ELLIPSIS}</p>
             </ProtectedLayout>
         );
     }
@@ -121,11 +119,11 @@ const WorkDetailPage: NextPage = () => {
             <ProtectedLayout>
                 <div className={styles.breadcrumb}>
                     <Link href="/works" className={styles.breadcrumbLink}>
-                        Works
+                        {BREADCRUMBS.WORKS}
                     </Link>
                 </div>
                 <p className={styles.error}>
-                    {error ? error.message : 'Work not found.'}
+                    {error ? error.message : ERRORS.WORK_NOT_FOUND}
                 </p>
             </ProtectedLayout>
         );
@@ -135,11 +133,11 @@ const WorkDetailPage: NextPage = () => {
         <ProtectedLayout>
             <div className={styles.breadcrumb}>
                 <Link href="/" className={styles.breadcrumbLink}>
-                    Home
+                    {BREADCRUMBS.HOME}
                 </Link>
                 <span className={styles.breadcrumbSep}> / </span>
                 <Link href="/works" className={styles.breadcrumbLink}>
-                    Works
+                    {BREADCRUMBS.WORKS}
                 </Link>
                 <span className={styles.breadcrumbSep}> / </span>
                 <span className={styles.breadcrumbCurrent}>{work.title}</span>
@@ -165,7 +163,7 @@ const WorkDetailPage: NextPage = () => {
                         <h1
                             className={styles.title}
                             onClick={startEditTitle}
-                            title="Click to edit"
+                            title={WORKS.CLICK_TO_EDIT}
                         >
                             {work.title}
                         </h1>
@@ -176,12 +174,12 @@ const WorkDetailPage: NextPage = () => {
                     onClick={handleDelete}
                     disabled={deleting}
                 >
-                    {deleting ? 'Deleting…' : 'Delete Work'}
+                    {deleting ? LOADING_STATES.DELETING : WORKS.DELETE_BUTTON}
                 </button>
             </div>
 
             <div className={styles.field}>
-                <span className={styles.fieldLabel}>Description</span>
+                <span className={styles.fieldLabel}>{WORKS.DESCRIPTION_FIELD_LABEL}</span>
                 {editingDescription ? (
                     <textarea
                         className={styles.descriptionInput}
@@ -203,27 +201,27 @@ const WorkDetailPage: NextPage = () => {
                                 : styles.descriptionEmpty
                         }
                         onClick={startEditDescription}
-                        title="Click to edit"
+                        title={WORKS.CLICK_TO_EDIT}
                     >
-                        {work.description ?? 'No description. Click to add one.'}
+                        {work.description ?? EMPTY.WORK_DESCRIPTION}
                     </p>
                 )}
             </div>
 
             <div className={styles.meta}>
                 <span className={styles.metaItem}>
-                    <strong>Created:</strong>{' '}
+                    <strong>{WORKS.META_CREATED}</strong>{' '}
                     {new Date(work.createdAt).toLocaleString()}
                 </span>
                 <span className={styles.metaItem}>
-                    <strong>Updated:</strong>{' '}
+                    <strong>{WORKS.META_UPDATED}</strong>{' '}
                     {new Date(work.updatedAt).toLocaleString()}
                 </span>
             </div>
 
             {work.versions.length > 0 && (
                 <div className={styles.versionsSection}>
-                    <h2 className={styles.sectionTitle}>Versions</h2>
+                    <h2 className={styles.sectionTitle}>{WORKS.VERSIONS_SECTION}</h2>
                     <ul className={styles.versionList}>
                         {work.versions.map((v) => (
                             <li key={v.guid} className={styles.versionItem}>

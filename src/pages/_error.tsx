@@ -1,4 +1,5 @@
 import React from 'react';
+import { ERRORS } from '../constants/messages';
 
 interface ErrorProps {
     statusCode: number;
@@ -15,8 +16,8 @@ export default class Error extends React.PureComponent<ErrorProps> {
         return (
             <p>
                 {this.props.statusCode ?
-                    `An error ${this.props.statusCode} occurred on server`
-                    : 'An error occurred on client'}
+                    ERRORS.SERVER_ERROR(this.props.statusCode)
+                    : ERRORS.CLIENT_ERROR}
             </p>
         );
     }

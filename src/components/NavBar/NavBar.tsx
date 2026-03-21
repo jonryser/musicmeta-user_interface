@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import type { NavBarProps } from './NavBarProps';
 import styles from './NavBar.module.css';
+import { NAV } from '../../constants/navigation';
+import { ARIA } from '../../constants/aria';
 
 export const NavBar = ({ userName, userImage }: NavBarProps) => {
     const { data: session } = useSession();
@@ -19,13 +21,13 @@ export const NavBar = ({ userName, userImage }: NavBarProps) => {
     return (
         <nav className={styles.nav}>
             <Link href="/works" className={styles.logo}>
-                MusicMeta
+                {NAV.LOGO}
             </Link>
 
             <ul className={styles.links}>
-                <li><Link href="/works">Works</Link></li>
-                <li><Link href="/people">People</Link></li>
-                <li><Link href="/places">Places</Link></li>
+                <li><Link href="/works">{NAV.WORKS}</Link></li>
+                <li><Link href="/people">{NAV.PEOPLE}</Link></li>
+                <li><Link href="/places">{NAV.PLACES}</Link></li>
             </ul>
 
             <div className={styles.user}>
@@ -38,14 +40,14 @@ export const NavBar = ({ userName, userImage }: NavBarProps) => {
                     )}
                 </div>
                 <button className={styles.signOut} onClick={handleSignOut}>
-                    Sign out
+                    {NAV.SIGN_OUT}
                 </button>
             </div>
 
             <button
                 className={styles.hamburger}
                 onClick={() => setMenuOpen(prev => !prev)}
-                aria-label="Toggle menu"
+                aria-label={ARIA.TOGGLE_MENU}
                 aria-expanded={menuOpen}
             >
                 <span />
@@ -54,10 +56,10 @@ export const NavBar = ({ userName, userImage }: NavBarProps) => {
             </button>
 
             <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ''}`}>
-                <Link href="/works" onClick={() => setMenuOpen(false)}>Works</Link>
-                <Link href="/people" onClick={() => setMenuOpen(false)}>People</Link>
-                <Link href="/places" onClick={() => setMenuOpen(false)}>Places</Link>
-                <button onClick={handleSignOut}>Sign out</button>
+                <Link href="/works" onClick={() => setMenuOpen(false)}>{NAV.WORKS}</Link>
+                <Link href="/people" onClick={() => setMenuOpen(false)}>{NAV.PEOPLE}</Link>
+                <Link href="/places" onClick={() => setMenuOpen(false)}>{NAV.PLACES}</Link>
+                <button onClick={handleSignOut}>{NAV.SIGN_OUT}</button>
             </div>
         </nav>
     );

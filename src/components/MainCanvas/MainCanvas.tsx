@@ -4,14 +4,16 @@ import { useQuery } from '@apollo/client';
 import MainCanvasProps from './MainCanvasProps'
 // Content.
 import ROLES_QUERY from './../../../graphql/roles.query'
+import { ROLES } from '../../constants/labels';
+import { STATUS, ERRORS } from '../../constants/messages';
 
 const MainCanvas: NextPage<MainCanvasProps> = () => {
     // Create a query hook
     const { data, loading, error } = useQuery(ROLES_QUERY);
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <p>{STATUS.LOADING}</p>
 
-    if (error) return <p>Error: {JSON.stringify(error)}</p>
+    if (error) return <p>{ERRORS.GENERIC(error)}</p>
 
     const roles = data.roles.map(role => {
         return role.name ? <li key={`job__${role.guid}`}><h2>{role.name}</h2>{role.description}</li> : null
@@ -19,7 +21,7 @@ const MainCanvas: NextPage<MainCanvasProps> = () => {
 
     return (
         <main>
-            <h1>Roles</h1>
+            <h1>{ROLES.PAGE_TITLE}</h1>
             <ul>{roles}</ul>
         </main>
     )

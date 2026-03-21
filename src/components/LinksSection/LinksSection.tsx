@@ -7,15 +7,18 @@ import {
 } from '../../graphql/generated/types';
 import type { LinksSectionProps } from './LinksSectionProps';
 import styles from './LinksSection.module.css';
+import { LINKS, COMMON } from '../../constants/labels';
+import { STATUS, ERRORS, EMPTY, CONFIRM, LOADING_STATES } from '../../constants/messages';
+import { ARIA } from '../../constants/aria';
 
 const LINK_TYPE_OPTIONS: { value: LinkType; label: string }[] = [
-    { value: LinkType.Audio, label: 'Audio' },
-    { value: LinkType.Image, label: 'Image' },
-    { value: LinkType.Document, label: 'Document' },
-    { value: LinkType.Video, label: 'Video' },
-    { value: LinkType.Streaming, label: 'Streaming' },
-    { value: LinkType.Purchase, label: 'Purchase' },
-    { value: LinkType.Other, label: 'Other' },
+    { value: LinkType.Audio, label: LINKS.LINK_TYPE_AUDIO },
+    { value: LinkType.Image, label: LINKS.LINK_TYPE_IMAGE },
+    { value: LinkType.Document, label: LINKS.LINK_TYPE_DOCUMENT },
+    { value: LinkType.Video, label: LINKS.LINK_TYPE_VIDEO },
+    { value: LinkType.Streaming, label: LINKS.LINK_TYPE_STREAMING },
+    { value: LinkType.Purchase, label: LINKS.LINK_TYPE_PURCHASE },
+    { value: LinkType.Other, label: LINKS.LINK_TYPE_OTHER },
 ];
 
 const linkTypeBadgeClass = (linkType: LinkType): string => {
@@ -57,7 +60,7 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
         e.preventDefault();
         setFormError(null);
         if (!url.trim()) {
-            setFormError('URL is required.');
+            setFormError(ERRORS.URL_REQUIRED);
             return;
         }
         try {
@@ -73,13 +76,13 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
             resetForm();
         } catch (err) {
             setFormError(
-                err instanceof Error ? err.message : 'Failed to add link.',
+                err instanceof Error ? err.message : ERRORS.FAILED_ADD_LINK,
             );
         }
     };
 
     const handleDelete = async (guid: string) => {
-        if (!confirm('Remove this link?')) return;
+        if (!confirm(CONFIRM.REMOVE_LINK)) return;
         try {
             await deleteLink({ variables: { guid } });
             await refetch();
@@ -91,21 +94,21 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
     return (
         <section className={styles.section}>
             <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>Links</h2>
+                <h2 className={styles.sectionTitle}>{LINKS.SECTION_TITLE}</h2>
                 {!showForm && (
                     <button
                         className={styles.addButton}
                         onClick={() => setShowForm(true)}
                     >
-                        Add Link
+                        {LINKS.ADD_BUTTON}
                     </button>
                 )}
             </div>
 
-            {loading && <p className={styles.status}>Loading links…</p>}
+            {loading && <p className={styles.status}>{STATUS.LOADING_LINKS}</p>}
             {error && (
                 <p className={styles.error}>
-                    Error loading links: {error.message}
+                    {ERRORS.LOADING_LINKS(error.message)}
                 </p>
             )}
 
@@ -121,7 +124,7 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
                     <div className={styles.formRow}>
                         <div className={styles.formField}>
                             <label className={styles.formLabel}>
-                                URL{' '}
+                                {LINKS.FIELD_URL}{' '}
                                 <span className={styles.required}>*</span>
                             </label>
                             <input
@@ -129,12 +132,12 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
                                 className={styles.input}
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
-                                placeholder="https://..."
+                                placeholder={LINKS.PLACEHOLDER_URL}
                                 required
                             />
                         </div>
                         <div className={styles.formField}>
-                            <label className={styles.formLabel}>Type</label>
+                            <label className={styles.formLabel}>{LINKS.FIELD_TYPE}</label>
                             <select
                                 className={styles.select}
                                 value={linkType}
@@ -151,13 +154,13 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
                         </div>
                     </div>
                     <div className={styles.formField}>
-                        <label className={styles.formLabel}>Description</label>
+                        <label className={styles.formLabel}>{LINKS.FIELD_DESCRIPTION}</label>
                         <input
                             type="text"
                             className={styles.input}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Optional description"
+                            placeholder={LINKS.PLACEHOLDER_DESCRIPTION}
                         />
                     </div>
                     <div className={styles.formActions}>
@@ -166,21 +169,21 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
                             className={styles.cancelButton}
                             onClick={resetForm}
                         >
-                            Cancel
+                            {COMMON.CANCEL}
                         </button>
                         <button
                             type="submit"
                             className={styles.submitButton}
                             disabled={creating}
                         >
-                            {creating ? 'Adding…' : 'Add Link'}
+                            {creating ? LOADING_STATES.ADDING : LINKS.ADD_BUTTON}
                         </button>
                     </div>
                 </form>
             )}
 
             {data && data.linksByWork.length === 0 && !showForm && (
-                <p className={styles.empty}>No links yet.</p>
+                <p className={styles.empty}>{EMPTY.LINKS}</p>
             )}
 
             {data && data.linksByWork.length > 0 && (
@@ -210,9 +213,9 @@ export const LinksSection = ({ workGuid }: LinksSectionProps) => {
                             <button
                                 className={styles.deleteButton}
                                 onClick={() => handleDelete(link.guid)}
-                                aria-label="Remove link"
+                                aria-label={ARIA.REMOVE_LINK}
                             >
-                                Remove
+                                {LINKS.REMOVE_BUTTON}
                             </button>
                         </li>
                     ))}

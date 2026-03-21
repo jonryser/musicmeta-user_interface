@@ -8,6 +8,9 @@ import {
     useWorksQuery,
 } from '../../graphql/generated/types';
 import styles from './workForm.module.css';
+import { WORKS, COMMON } from '../../constants/labels';
+import { ERRORS, LOADING_STATES } from '../../constants/messages';
+import { BREADCRUMBS } from '../../constants/navigation';
 
 const NewWorkPage: NextPage = () => {
     const router = useRouter();
@@ -24,7 +27,7 @@ const NewWorkPage: NextPage = () => {
         setFormError(null);
 
         if (!title.trim()) {
-            setFormError('Title is required.');
+            setFormError(ERRORS.TITLE_REQUIRED);
             return;
         }
 
@@ -41,7 +44,7 @@ const NewWorkPage: NextPage = () => {
             }
         } catch (err) {
             setFormError(
-                err instanceof Error ? err.message : 'Failed to create work.',
+                err instanceof Error ? err.message : ERRORS.FAILED_CREATE_WORK,
             );
         }
     };
@@ -50,13 +53,13 @@ const NewWorkPage: NextPage = () => {
         <ProtectedLayout>
             <div className={styles.breadcrumb}>
                 <Link href="/works" className={styles.breadcrumbLink}>
-                    Works
+                    {BREADCRUMBS.WORKS}
                 </Link>
                 <span className={styles.breadcrumbSep}> / </span>
-                <span>New Work</span>
+                <span>{BREADCRUMBS.NEW_WORK}</span>
             </div>
 
-            <h1 className={styles.title}>Create New Work</h1>
+            <h1 className={styles.title}>{WORKS.CREATE_NEW_HEADING}</h1>
 
             <form onSubmit={handleSubmit} className={styles.form}>
                 {formError && (
@@ -65,7 +68,7 @@ const NewWorkPage: NextPage = () => {
 
                 <div className={styles.field}>
                     <label htmlFor="title" className={styles.label}>
-                        Title <span className={styles.required}>*</span>
+                        {WORKS.FIELD_TITLE} <span className={styles.required}>*</span>
                     </label>
                     <input
                         id="title"
@@ -73,29 +76,29 @@ const NewWorkPage: NextPage = () => {
                         className={styles.input}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Enter work title"
+                        placeholder={WORKS.PLACEHOLDER_TITLE}
                         required
                     />
                 </div>
 
                 <div className={styles.field}>
                     <label htmlFor="description" className={styles.label}>
-                        Description
+                        {WORKS.FIELD_DESCRIPTION}
                     </label>
                     <textarea
                         id="description"
                         className={styles.textarea}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Optional description"
+                        placeholder={WORKS.PLACEHOLDER_DESCRIPTION}
                         rows={4}
                     />
                 </div>
 
                 <div className={styles.field}>
                     <label htmlFor="parentId" className={styles.label}>
-                        Parent Work{' '}
-                        <span className={styles.hint}>(for version tree)</span>
+                        {WORKS.FIELD_PARENT_WORK}{' '}
+                        <span className={styles.hint}>{WORKS.FIELD_PARENT_HINT}</span>
                     </label>
                     <select
                         id="parentId"
@@ -103,7 +106,7 @@ const NewWorkPage: NextPage = () => {
                         value={parentId}
                         onChange={(e) => setParentId(e.target.value)}
                     >
-                        <option value="">None</option>
+                        <option value="">{WORKS.FIELD_NONE_OPTION}</option>
                         {worksData?.works.map((work) => (
                             <option key={work.guid} value={work.guid}>
                                 {work.title}
@@ -114,14 +117,14 @@ const NewWorkPage: NextPage = () => {
 
                 <div className={styles.actions}>
                     <Link href="/works" className={styles.cancelLink}>
-                        Cancel
+                        {COMMON.CANCEL}
                     </Link>
                     <button
                         type="submit"
                         className={styles.submitButton}
                         disabled={loading}
                     >
-                        {loading ? 'Creating…' : 'Create Work'}
+                        {loading ? LOADING_STATES.CREATING : WORKS.SUBMIT_BUTTON}
                     </button>
                 </div>
             </form>

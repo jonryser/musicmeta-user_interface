@@ -9,6 +9,9 @@ import ROLES_QUERY from '../../../graphql/roles.query';
 import { useQuery } from '@apollo/client';
 import type { CreditsSectionProps } from './CreditsSectionProps';
 import styles from './CreditsSection.module.css';
+import { CREDITS, COMMON } from '../../constants/labels';
+import { STATUS, ERRORS, EMPTY, CONFIRM, LOADING_STATES } from '../../constants/messages';
+import { ARIA } from '../../constants/aria';
 
 export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
     const { data, loading, error, refetch } = useCreditsByWorkQuery({
@@ -40,7 +43,7 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
         e.preventDefault();
         setFormError(null);
         if (!personGuid || !roleGuid) {
-            setFormError('Person and Role are required.');
+            setFormError(ERRORS.PERSON_ROLE_REQUIRED);
             return;
         }
         try {
@@ -57,13 +60,13 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
             resetForm();
         } catch (err) {
             setFormError(
-                err instanceof Error ? err.message : 'Failed to add credit.',
+                err instanceof Error ? err.message : ERRORS.FAILED_ADD_CREDIT,
             );
         }
     };
 
     const handleDelete = async (guid: string) => {
-        if (!confirm('Remove this credit?')) return;
+        if (!confirm(CONFIRM.REMOVE_CREDIT)) return;
         try {
             await deleteCredit({ variables: { guid } });
             await refetch();
@@ -75,21 +78,21 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
     return (
         <section className={styles.section}>
             <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>Credits</h2>
+                <h2 className={styles.sectionTitle}>{CREDITS.SECTION_TITLE}</h2>
                 {!showForm && (
                     <button
                         className={styles.addButton}
                         onClick={() => setShowForm(true)}
                     >
-                        Add Credit
+                        {CREDITS.ADD_BUTTON}
                     </button>
                 )}
             </div>
 
-            {loading && <p className={styles.status}>Loading credits…</p>}
+            {loading && <p className={styles.status}>{STATUS.LOADING_CREDITS}</p>}
             {error && (
                 <p className={styles.error}>
-                    Error loading credits: {error.message}
+                    {ERRORS.LOADING_CREDITS(error.message)}
                 </p>
             )}
 
@@ -105,7 +108,7 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                     <div className={styles.formRow}>
                         <div className={styles.formField}>
                             <label className={styles.formLabel}>
-                                Person <span className={styles.required}>*</span>
+                                {CREDITS.FIELD_PERSON} <span className={styles.required}>*</span>
                             </label>
                             <select
                                 className={styles.select}
@@ -113,7 +116,7 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                                 onChange={(e) => setPersonGuid(e.target.value)}
                                 required
                             >
-                                <option value="">Select person…</option>
+                                <option value="">{CREDITS.SELECT_PERSON_PLACEHOLDER}</option>
                                 {peopleData?.people.map((p) => (
                                     <option key={p.guid} value={p.guid}>
                                         {p.firstName} {p.lastName}
@@ -123,7 +126,7 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                         </div>
                         <div className={styles.formField}>
                             <label className={styles.formLabel}>
-                                Role <span className={styles.required}>*</span>
+                                {CREDITS.FIELD_ROLE} <span className={styles.required}>*</span>
                             </label>
                             <select
                                 className={styles.select}
@@ -131,7 +134,7 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                                 onChange={(e) => setRoleGuid(e.target.value)}
                                 required
                             >
-                                <option value="">Select role…</option>
+                                <option value="">{CREDITS.SELECT_ROLE_PLACEHOLDER}</option>
                                 {rolesData?.roles.map((r) => (
                                     <option key={r.guid} value={r.guid}>
                                         {r.name}
@@ -143,24 +146,24 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                     <div className={styles.formRow}>
                         <div className={styles.formField}>
                             <label className={styles.formLabel}>
-                                Instrument
+                                {CREDITS.FIELD_INSTRUMENT}
                             </label>
                             <input
                                 type="text"
                                 className={styles.input}
                                 value={instrument}
                                 onChange={(e) => setInstrument(e.target.value)}
-                                placeholder="e.g. electric guitar"
+                                placeholder={CREDITS.PLACEHOLDER_INSTRUMENT}
                             />
                         </div>
                         <div className={styles.formField}>
-                            <label className={styles.formLabel}>Notes</label>
+                            <label className={styles.formLabel}>{CREDITS.FIELD_NOTES}</label>
                             <input
                                 type="text"
                                 className={styles.input}
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                placeholder="Optional notes"
+                                placeholder={CREDITS.PLACEHOLDER_NOTES}
                             />
                         </div>
                     </div>
@@ -170,31 +173,31 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                             className={styles.cancelButton}
                             onClick={resetForm}
                         >
-                            Cancel
+                            {COMMON.CANCEL}
                         </button>
                         <button
                             type="submit"
                             className={styles.submitButton}
                             disabled={creating}
                         >
-                            {creating ? 'Adding…' : 'Add Credit'}
+                            {creating ? LOADING_STATES.ADDING : CREDITS.ADD_BUTTON}
                         </button>
                     </div>
                 </form>
             )}
 
             {data && data.creditsByWork.length === 0 && !showForm && (
-                <p className={styles.empty}>No credits yet.</p>
+                <p className={styles.empty}>{EMPTY.CREDITS}</p>
             )}
 
             {data && data.creditsByWork.length > 0 && (
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th className={styles.th}>Person</th>
-                            <th className={styles.th}>Role</th>
-                            <th className={styles.th}>Instrument</th>
-                            <th className={styles.th}>Notes</th>
+                            <th className={styles.th}>{CREDITS.TABLE_PERSON}</th>
+                            <th className={styles.th}>{CREDITS.TABLE_ROLE}</th>
+                            <th className={styles.th}>{CREDITS.TABLE_INSTRUMENT}</th>
+                            <th className={styles.th}>{CREDITS.TABLE_NOTES}</th>
                             <th className={styles.th}></th>
                         </tr>
                     </thead>
@@ -209,10 +212,10 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                                     {credit.role.name}
                                 </td>
                                 <td className={styles.td}>
-                                    {credit.instrument ?? '—'}
+                                    {credit.instrument ?? '\u2014'}
                                 </td>
                                 <td className={styles.td}>
-                                    {credit.notes ?? '—'}
+                                    {credit.notes ?? '\u2014'}
                                 </td>
                                 <td className={styles.td}>
                                     <button
@@ -220,9 +223,9 @@ export const CreditsSection = ({ workGuid }: CreditsSectionProps) => {
                                         onClick={() =>
                                             handleDelete(credit.guid)
                                         }
-                                        aria-label="Remove credit"
+                                        aria-label={ARIA.REMOVE_CREDIT}
                                     >
-                                        Remove
+                                        {CREDITS.REMOVE_BUTTON}
                                     </button>
                                 </td>
                             </tr>

@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { ProtectedLayout } from '../../components/ProtectedLayout';
 import { useWorksQuery } from '../../graphql/generated/types';
 import styles from './works.module.css';
+import { WORKS } from '../../constants/labels';
+import { STATUS, ERRORS, EMPTY } from '../../constants/messages';
 
 const WorksPage: NextPage = () => {
     const router = useRouter();
@@ -16,27 +18,27 @@ const WorksPage: NextPage = () => {
     return (
         <ProtectedLayout>
             <div className={styles.header}>
-                <h1 className={styles.title}>Works</h1>
+                <h1 className={styles.title}>{WORKS.PAGE_TITLE}</h1>
                 <button className={styles.newButton} onClick={handleNewWork}>
-                    New Work
+                    {WORKS.NEW_BUTTON}
                 </button>
             </div>
 
-            {loading && <p className={styles.status}>Loading...</p>}
+            {loading && <p className={styles.status}>{STATUS.LOADING}</p>}
             {error && (
                 <p className={styles.error}>
-                    Error loading works: {error.message}
+                    {ERRORS.LOADING_WORKS(error.message)}
                 </p>
             )}
 
             {!loading && !error && data?.works.length === 0 && (
                 <div className={styles.empty}>
-                    <p>No works yet. Create your first one.</p>
+                    <p>{EMPTY.WORKS}</p>
                     <button
                         className={styles.newButton}
                         onClick={handleNewWork}
                     >
-                        Create Your First Work
+                        {WORKS.CREATE_FIRST_BUTTON}
                     </button>
                 </div>
             )}
@@ -55,12 +57,12 @@ const WorksPage: NextPage = () => {
                                 {work.description && (
                                     <p className={styles.itemDescription}>
                                         {work.description.length > 120
-                                            ? `${work.description.slice(0, 120)}…`
+                                            ? `${work.description.slice(0, 120)}\u2026`
                                             : work.description}
                                     </p>
                                 )}
                                 <span className={styles.itemDate}>
-                                    Created{' '}
+                                    {WORKS.CREATED_PREFIX}{' '}
                                     {new Date(
                                         work.createdAt,
                                     ).toLocaleDateString()}

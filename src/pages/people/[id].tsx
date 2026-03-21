@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { ProtectedLayout } from '../../components/ProtectedLayout';
 import { usePersonQuery } from '../../graphql/generated/types';
 import styles from './personDetail.module.css';
+import { PEOPLE } from '../../constants/labels';
+import { STATUS, ERRORS } from '../../constants/messages';
+import { BREADCRUMBS } from '../../constants/navigation';
 
 const PersonDetailPage: NextPage = () => {
     const router = useRouter();
@@ -20,7 +23,7 @@ const PersonDetailPage: NextPage = () => {
     if (loading) {
         return (
             <ProtectedLayout>
-                <p className={styles.status}>Loading…</p>
+                <p className={styles.status}>{STATUS.LOADING_ELLIPSIS}</p>
             </ProtectedLayout>
         );
     }
@@ -30,11 +33,11 @@ const PersonDetailPage: NextPage = () => {
             <ProtectedLayout>
                 <div className={styles.breadcrumb}>
                     <Link href="/people" className={styles.breadcrumbLink}>
-                        People
+                        {BREADCRUMBS.PEOPLE}
                     </Link>
                 </div>
                 <p className={styles.error}>
-                    {error ? error.message : 'Person not found.'}
+                    {error ? error.message : ERRORS.PERSON_NOT_FOUND}
                 </p>
             </ProtectedLayout>
         );
@@ -44,7 +47,7 @@ const PersonDetailPage: NextPage = () => {
         <ProtectedLayout>
             <div className={styles.breadcrumb}>
                 <Link href="/people" className={styles.breadcrumbLink}>
-                    People
+                    {BREADCRUMBS.PEOPLE}
                 </Link>
                 <span className={styles.breadcrumbSep}> / </span>
                 <span className={styles.breadcrumbCurrent}>
@@ -58,18 +61,18 @@ const PersonDetailPage: NextPage = () => {
 
             <div className={styles.card}>
                 <div className={styles.field}>
-                    <span className={styles.fieldLabel}>First Name</span>
+                    <span className={styles.fieldLabel}>{PEOPLE.FIELD_FIRST_NAME}</span>
                     <span className={styles.fieldValue}>
                         {person.firstName}
                     </span>
                 </div>
                 <div className={styles.field}>
-                    <span className={styles.fieldLabel}>Last Name</span>
+                    <span className={styles.fieldLabel}>{PEOPLE.FIELD_LAST_NAME}</span>
                     <span className={styles.fieldValue}>{person.lastName}</span>
                 </div>
                 {person.email && (
                     <div className={styles.field}>
-                        <span className={styles.fieldLabel}>Email</span>
+                        <span className={styles.fieldLabel}>{PEOPLE.FIELD_EMAIL}</span>
                         <a
                             href={`mailto:${person.email}`}
                             className={styles.emailLink}
@@ -79,13 +82,13 @@ const PersonDetailPage: NextPage = () => {
                     </div>
                 )}
                 <div className={styles.field}>
-                    <span className={styles.fieldLabel}>Added</span>
+                    <span className={styles.fieldLabel}>{PEOPLE.FIELD_ADDED}</span>
                     <span className={styles.fieldValue}>
                         {new Date(person.createdAt).toLocaleString()}
                     </span>
                 </div>
                 <div className={styles.field}>
-                    <span className={styles.fieldLabel}>Last Updated</span>
+                    <span className={styles.fieldLabel}>{PEOPLE.FIELD_LAST_UPDATED}</span>
                     <span className={styles.fieldValue}>
                         {new Date(person.updatedAt).toLocaleString()}
                     </span>
