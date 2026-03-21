@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { NavBar } from '../NavBar';
 import type { ProtectedLayoutProps } from './ProtectedLayoutProps';
 import styles from './ProtectedLayout.module.css';
+import { STATUS } from '../../constants/messages';
 
 export const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
     const { status } = useSession();
@@ -16,7 +17,7 @@ export const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
     }, [status, router]);
 
     if (status === 'loading') {
-        return <div className={styles.loading}>Loading...</div>;
+        return <div className={styles.loading}>{STATUS.LOADING}</div>;
     }
 
     if (status === 'unauthenticated') {

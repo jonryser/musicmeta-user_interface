@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { ProtectedLayout } from '../../components/ProtectedLayout';
 import { usePeopleQuery } from '../../graphql/generated/types';
 import styles from './people.module.css';
+import { PEOPLE } from '../../constants/labels';
+import { STATUS, ERRORS, EMPTY } from '../../constants/messages';
+import { ARIA } from '../../constants/aria';
 
 const PeoplePage: NextPage = () => {
     const { data, loading, error } = usePeopleQuery();
@@ -21,32 +24,32 @@ const PeoplePage: NextPage = () => {
     return (
         <ProtectedLayout>
             <div className={styles.header}>
-                <h1 className={styles.title}>People</h1>
+                <h1 className={styles.title}>{PEOPLE.PAGE_TITLE}</h1>
             </div>
 
             <div className={styles.searchBar}>
                 <input
                     type="search"
                     className={styles.searchInput}
-                    placeholder="Search by name or email…"
+                    placeholder={PEOPLE.SEARCH_PLACEHOLDER}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    aria-label="Search people"
+                    aria-label={ARIA.SEARCH_PEOPLE}
                 />
             </div>
 
-            {loading && <p className={styles.status}>Loading…</p>}
+            {loading && <p className={styles.status}>{STATUS.LOADING_ELLIPSIS}</p>}
             {error && (
                 <p className={styles.error}>
-                    Error loading people: {error.message}
+                    {ERRORS.LOADING_PEOPLE(error.message)}
                 </p>
             )}
 
             {!loading && !error && filtered?.length === 0 && (
                 <p className={styles.empty}>
                     {search
-                        ? `No people match "${search}".`
-                        : 'No people in the directory yet.'}
+                        ? EMPTY.PEOPLE_SEARCH(search)
+                        : EMPTY.PEOPLE}
                 </p>
             )}
 

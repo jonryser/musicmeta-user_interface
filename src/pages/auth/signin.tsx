@@ -1,6 +1,7 @@
 import { signIn } from 'next-auth/react';
 import type { NextPage } from 'next';
 import styles from './signin.module.css';
+import { SIGN_IN } from '../../constants/labels';
 
 const SignInPage: NextPage = () => {
     const handleSignIn = () => {
@@ -10,10 +11,10 @@ const SignInPage: NextPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <h1 className={styles.title}>MusicMeta</h1>
-                <p className={styles.subtitle}>Sign in to manage your musical works</p>
+                <h1 className={styles.title}>{SIGN_IN.TITLE}</h1>
+                <p className={styles.subtitle}>{SIGN_IN.SUBTITLE}</p>
                 <button className={styles.button} onClick={handleSignIn}>
-                    Sign in with Google
+                    {SIGN_IN.GOOGLE_BUTTON}
                 </button>
             </div>
         </div>
