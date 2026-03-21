@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const ROLES_QUERY = gql`
+export const ROLES_QUERY = gql`
   query Roles {
     roles {
       description

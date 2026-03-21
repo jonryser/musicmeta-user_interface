@@ -5,6 +5,7 @@ export const CREDITS_BY_WORK_QUERY = gql`
     creditsByWork(workGuid: $workGuid) {
       guid
       instrument
+      notes
       person {
         guid
         firstName

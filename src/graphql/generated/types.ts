@@ -23,23 +23,77 @@ export type Credit = {
   deletedAt?: Maybe<Scalars['String']['output']>;
   guid: Scalars['ID']['output'];
   instrument?: Maybe<Scalars['String']['output']>;
+  notes?: Maybe<Scalars['String']['output']>;
   person: Person;
   role: Role;
   updatedAt: Scalars['String']['output'];
   work: Work;
 };
 
+export type Link = {
+  __typename?: 'Link';
+  createdAt: Scalars['String']['output'];
+  deletedAt?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  guid: Scalars['ID']['output'];
+  linkType: LinkType;
+  updatedAt: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+  work: Work;
+};
+
+export enum LinkType {
+  Audio = 'audio',
+  Document = 'document',
+  Image = 'image',
+  Other = 'other',
+  Purchase = 'purchase',
+  Streaming = 'streaming',
+  Video = 'video'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createCredit: Credit;
+  createLink: Link;
   createWork: Work;
+  deleteCredit: Credit;
+  deleteLink: Link;
   deleteWork: Work;
   updateWork: Work;
+};
+
+
+export type MutationCreateCreditArgs = {
+  instrument?: InputMaybe<Scalars['String']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
+  personGuid: Scalars['ID']['input'];
+  roleGuid: Scalars['ID']['input'];
+  workGuid: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateLinkArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  linkType: LinkType;
+  url: Scalars['String']['input'];
+  workGuid: Scalars['ID']['input'];
 };
 
 
 export type MutationCreateWorkArgs = {
   description?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteCreditArgs = {
+  guid: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteLinkArgs = {
+  guid: Scalars['ID']['input'];
 };
 
 
@@ -81,6 +135,7 @@ export type Place = {
 export type Query = {
   __typename?: 'Query';
   creditsByWork: Array<Credit>;
+  linksByWork: Array<Link>;
   people: Array<Person>;
   person?: Maybe<Person>;
   place?: Maybe<Place>;
@@ -92,6 +147,11 @@ export type Query = {
 
 
 export type QueryCreditsByWorkArgs = {
+  workGuid: Scalars['ID']['input'];
+};
+
+
+export type QueryLinksByWorkArgs = {
   workGuid: Scalars['ID']['input'];
 };
 
@@ -124,6 +184,7 @@ export type Work = {
   deletedAt?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   guid: Scalars['ID']['output'];
+  links: Array<Link>;
   title: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
   versions: Array<WorkVersion>;
@@ -141,12 +202,54 @@ export type WorkVersion = {
   work: Work;
 };
 
+export type CreateCreditMutationVariables = Exact<{
+  workGuid: Scalars['ID']['input'];
+  personGuid: Scalars['ID']['input'];
+  roleGuid: Scalars['ID']['input'];
+  instrument?: InputMaybe<Scalars['String']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CreateCreditMutation = { __typename?: 'Mutation', createCredit: { __typename?: 'Credit', guid: string, instrument?: string | null, notes?: string | null, createdAt: string, updatedAt: string, person: { __typename?: 'Person', guid: string, firstName: string, lastName: string }, role: { __typename?: 'Role', guid: string, name: string } } };
+
+export type DeleteCreditMutationVariables = Exact<{
+  guid: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCreditMutation = { __typename?: 'Mutation', deleteCredit: { __typename?: 'Credit', guid: string, deletedAt?: string | null } };
+
 export type CreditsByWorkQueryVariables = Exact<{
   workGuid: Scalars['ID']['input'];
 }>;
 
 
-export type CreditsByWorkQuery = { __typename?: 'Query', creditsByWork: Array<{ __typename?: 'Credit', guid: string, instrument?: string | null, createdAt: string, updatedAt: string, person: { __typename?: 'Person', guid: string, firstName: string, lastName: string }, role: { __typename?: 'Role', guid: string, name: string } }> };
+export type CreditsByWorkQuery = { __typename?: 'Query', creditsByWork: Array<{ __typename?: 'Credit', guid: string, instrument?: string | null, notes?: string | null, createdAt: string, updatedAt: string, person: { __typename?: 'Person', guid: string, firstName: string, lastName: string }, role: { __typename?: 'Role', guid: string, name: string } }> };
+
+export type CreateLinkMutationVariables = Exact<{
+  workGuid: Scalars['ID']['input'];
+  url: Scalars['String']['input'];
+  linkType: LinkType;
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CreateLinkMutation = { __typename?: 'Mutation', createLink: { __typename?: 'Link', guid: string, url: string, linkType: LinkType, description?: string | null, createdAt: string, updatedAt: string } };
+
+export type DeleteLinkMutationVariables = Exact<{
+  guid: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteLinkMutation = { __typename?: 'Mutation', deleteLink: { __typename?: 'Link', guid: string, deletedAt?: string | null } };
+
+export type LinksByWorkQueryVariables = Exact<{
+  workGuid: Scalars['ID']['input'];
+}>;
+
+
+export type LinksByWorkQuery = { __typename?: 'Query', linksByWork: Array<{ __typename?: 'Link', guid: string, url: string, linkType: LinkType, description?: string | null, createdAt: string, updatedAt: string }> };
 
 export type PeopleQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -209,11 +312,102 @@ export type WorkQueryVariables = Exact<{
 export type WorkQuery = { __typename?: 'Query', work?: { __typename?: 'Work', guid: string, title: string, description?: string | null, createdAt: string, updatedAt: string, versions: Array<{ __typename?: 'WorkVersion', guid: string, title: string, createdAt: string }>, credits: Array<{ __typename?: 'Credit', guid: string, instrument?: string | null, person: { __typename?: 'Person', guid: string, firstName: string, lastName: string }, role: { __typename?: 'Role', guid: string, name: string } }> } | null };
 
 
+export const CreateCreditDocument = gql`
+    mutation CreateCredit($workGuid: ID!, $personGuid: ID!, $roleGuid: ID!, $instrument: String, $notes: String) {
+  createCredit(
+    workGuid: $workGuid
+    personGuid: $personGuid
+    roleGuid: $roleGuid
+    instrument: $instrument
+    notes: $notes
+  ) {
+    guid
+    instrument
+    notes
+    createdAt
+    updatedAt
+    person {
+      guid
+      firstName
+      lastName
+    }
+    role {
+      guid
+      name
+    }
+  }
+}
+    `;
+export type CreateCreditMutationFn = Apollo.MutationFunction<CreateCreditMutation, CreateCreditMutationVariables>;
+
+/**
+ * __useCreateCreditMutation__
+ *
+ * To run a mutation, you first call `useCreateCreditMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCreditMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCreditMutation, { data, loading, error }] = useCreateCreditMutation({
+ *   variables: {
+ *      workGuid: // value for 'workGuid'
+ *      personGuid: // value for 'personGuid'
+ *      roleGuid: // value for 'roleGuid'
+ *      instrument: // value for 'instrument'
+ *      notes: // value for 'notes'
+ *   },
+ * });
+ */
+export function useCreateCreditMutation(baseOptions?: Apollo.MutationHookOptions<CreateCreditMutation, CreateCreditMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCreditMutation, CreateCreditMutationVariables>(CreateCreditDocument, options);
+      }
+export type CreateCreditMutationHookResult = ReturnType<typeof useCreateCreditMutation>;
+export type CreateCreditMutationResult = Apollo.MutationResult<CreateCreditMutation>;
+export type CreateCreditMutationOptions = Apollo.BaseMutationOptions<CreateCreditMutation, CreateCreditMutationVariables>;
+export const DeleteCreditDocument = gql`
+    mutation DeleteCredit($guid: ID!) {
+  deleteCredit(guid: $guid) {
+    guid
+    deletedAt
+  }
+}
+    `;
+export type DeleteCreditMutationFn = Apollo.MutationFunction<DeleteCreditMutation, DeleteCreditMutationVariables>;
+
+/**
+ * __useDeleteCreditMutation__
+ *
+ * To run a mutation, you first call `useDeleteCreditMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCreditMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCreditMutation, { data, loading, error }] = useDeleteCreditMutation({
+ *   variables: {
+ *      guid: // value for 'guid'
+ *   },
+ * });
+ */
+export function useDeleteCreditMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCreditMutation, DeleteCreditMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCreditMutation, DeleteCreditMutationVariables>(DeleteCreditDocument, options);
+      }
+export type DeleteCreditMutationHookResult = ReturnType<typeof useDeleteCreditMutation>;
+export type DeleteCreditMutationResult = Apollo.MutationResult<DeleteCreditMutation>;
+export type DeleteCreditMutationOptions = Apollo.BaseMutationOptions<DeleteCreditMutation, DeleteCreditMutationVariables>;
 export const CreditsByWorkDocument = gql`
     query CreditsByWork($workGuid: ID!) {
   creditsByWork(workGuid: $workGuid) {
     guid
     instrument
+    notes
     person {
       guid
       firstName
@@ -264,6 +458,134 @@ export type CreditsByWorkQueryHookResult = ReturnType<typeof useCreditsByWorkQue
 export type CreditsByWorkLazyQueryHookResult = ReturnType<typeof useCreditsByWorkLazyQuery>;
 export type CreditsByWorkSuspenseQueryHookResult = ReturnType<typeof useCreditsByWorkSuspenseQuery>;
 export type CreditsByWorkQueryResult = Apollo.QueryResult<CreditsByWorkQuery, CreditsByWorkQueryVariables>;
+export const CreateLinkDocument = gql`
+    mutation CreateLink($workGuid: ID!, $url: String!, $linkType: LinkType!, $description: String) {
+  createLink(
+    workGuid: $workGuid
+    url: $url
+    linkType: $linkType
+    description: $description
+  ) {
+    guid
+    url
+    linkType
+    description
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateLinkMutationFn = Apollo.MutationFunction<CreateLinkMutation, CreateLinkMutationVariables>;
+
+/**
+ * __useCreateLinkMutation__
+ *
+ * To run a mutation, you first call `useCreateLinkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLinkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLinkMutation, { data, loading, error }] = useCreateLinkMutation({
+ *   variables: {
+ *      workGuid: // value for 'workGuid'
+ *      url: // value for 'url'
+ *      linkType: // value for 'linkType'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useCreateLinkMutation(baseOptions?: Apollo.MutationHookOptions<CreateLinkMutation, CreateLinkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateLinkMutation, CreateLinkMutationVariables>(CreateLinkDocument, options);
+      }
+export type CreateLinkMutationHookResult = ReturnType<typeof useCreateLinkMutation>;
+export type CreateLinkMutationResult = Apollo.MutationResult<CreateLinkMutation>;
+export type CreateLinkMutationOptions = Apollo.BaseMutationOptions<CreateLinkMutation, CreateLinkMutationVariables>;
+export const DeleteLinkDocument = gql`
+    mutation DeleteLink($guid: ID!) {
+  deleteLink(guid: $guid) {
+    guid
+    deletedAt
+  }
+}
+    `;
+export type DeleteLinkMutationFn = Apollo.MutationFunction<DeleteLinkMutation, DeleteLinkMutationVariables>;
+
+/**
+ * __useDeleteLinkMutation__
+ *
+ * To run a mutation, you first call `useDeleteLinkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLinkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLinkMutation, { data, loading, error }] = useDeleteLinkMutation({
+ *   variables: {
+ *      guid: // value for 'guid'
+ *   },
+ * });
+ */
+export function useDeleteLinkMutation(baseOptions?: Apollo.MutationHookOptions<DeleteLinkMutation, DeleteLinkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteLinkMutation, DeleteLinkMutationVariables>(DeleteLinkDocument, options);
+      }
+export type DeleteLinkMutationHookResult = ReturnType<typeof useDeleteLinkMutation>;
+export type DeleteLinkMutationResult = Apollo.MutationResult<DeleteLinkMutation>;
+export type DeleteLinkMutationOptions = Apollo.BaseMutationOptions<DeleteLinkMutation, DeleteLinkMutationVariables>;
+export const LinksByWorkDocument = gql`
+    query LinksByWork($workGuid: ID!) {
+  linksByWork(workGuid: $workGuid) {
+    guid
+    url
+    linkType
+    description
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useLinksByWorkQuery__
+ *
+ * To run a query within a React component, call `useLinksByWorkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLinksByWorkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLinksByWorkQuery({
+ *   variables: {
+ *      workGuid: // value for 'workGuid'
+ *   },
+ * });
+ */
+export function useLinksByWorkQuery(baseOptions: Apollo.QueryHookOptions<LinksByWorkQuery, LinksByWorkQueryVariables> & ({ variables: LinksByWorkQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LinksByWorkQuery, LinksByWorkQueryVariables>(LinksByWorkDocument, options);
+      }
+export function useLinksByWorkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LinksByWorkQuery, LinksByWorkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LinksByWorkQuery, LinksByWorkQueryVariables>(LinksByWorkDocument, options);
+        }
+// @ts-ignore
+export function useLinksByWorkSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<LinksByWorkQuery, LinksByWorkQueryVariables>): Apollo.UseSuspenseQueryResult<LinksByWorkQuery, LinksByWorkQueryVariables>;
+export function useLinksByWorkSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LinksByWorkQuery, LinksByWorkQueryVariables>): Apollo.UseSuspenseQueryResult<LinksByWorkQuery | undefined, LinksByWorkQueryVariables>;
+export function useLinksByWorkSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LinksByWorkQuery, LinksByWorkQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LinksByWorkQuery, LinksByWorkQueryVariables>(LinksByWorkDocument, options);
+        }
+export type LinksByWorkQueryHookResult = ReturnType<typeof useLinksByWorkQuery>;
+export type LinksByWorkLazyQueryHookResult = ReturnType<typeof useLinksByWorkLazyQuery>;
+export type LinksByWorkSuspenseQueryHookResult = ReturnType<typeof useLinksByWorkSuspenseQuery>;
+export type LinksByWorkQueryResult = Apollo.QueryResult<LinksByWorkQuery, LinksByWorkQueryVariables>;
 export const PeopleDocument = gql`
     query People {
   people {

@@ -7,6 +7,7 @@ type Work {
   deletedAt: String
   versions: [WorkVersion!]!
   credits: [Credit!]!
+  links: [Link!]!
 }
 
 type WorkVersion {
@@ -54,6 +55,28 @@ type Credit {
   person: Person!
   role: Role!
   instrument: String
+  notes: String
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+enum LinkType {
+  audio
+  image
+  document
+  video
+  streaming
+  purchase
+  other
+}
+
+type Link {
+  guid: ID!
+  work: Work!
+  url: String!
+  linkType: LinkType!
+  description: String
   createdAt: String!
   updatedAt: String!
   deletedAt: String
@@ -67,6 +90,7 @@ type Query {
   places: [Place!]!
   place(guid: ID!): Place
   creditsByWork(workGuid: ID!): [Credit!]!
+  linksByWork(workGuid: ID!): [Link!]!
   roles: [Role!]!
 }
 
@@ -74,4 +98,8 @@ type Mutation {
   createWork(title: String!, description: String): Work!
   updateWork(guid: ID!, title: String, description: String): Work!
   deleteWork(guid: ID!): Work!
+  createCredit(workGuid: ID!, personGuid: ID!, roleGuid: ID!, instrument: String, notes: String): Credit!
+  deleteCredit(guid: ID!): Credit!
+  createLink(workGuid: ID!, url: String!, linkType: LinkType!, description: String): Link!
+  deleteLink(guid: ID!): Link!
 }
