@@ -32,7 +32,7 @@ Everything a human reads:
 
 Constants live in `src/constants/`, grouped by domain:
 
-```
+```text
 src/constants/
   labels.ts       ← button text, field labels, headings
   placeholders.ts ← input placeholder text
